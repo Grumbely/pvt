@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>se.antongomes.dsv.pvt</groupId>
+    <artifactId>pvt-web</artifactId>
+    <packaging>war</packaging>
+    <version>1.0</version>
+    <name>PVT</name>
+    <!-- TODO <description></description> -->
+    <contributors>
+        <contributor>
+            <name>Anton Gomes</name>
+            <email>gomes.anton@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Mattias Englund</name>
+            <email>carlmattiasenglund@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Christian Valassi</name>
+            <email>christian.valassi@hotmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Michel Nickbon</name>
+            <email>michel.lemponen@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Patrik Youssef</name>
+            <email>patrikyoussef@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Fredrik Sunnanhed</name>
+            <email>fredrik.sunnanhed@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Fredrik Nyman</name>
+            <email>fredrik.nyman@live.se</email>
+        </contributor>
+        <contributor>
+            <name>Daniel Kollin</name>
+            <email>danne.collin@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Anton Blomberg</name>
+            <email>anton@naetet.se</email>
+        </contributor>
+        <contributor>
+            <name>Peter Ledberg</name>
+            <email>ledberg.peter@gmail.com</email>
+        </contributor>
+    </contributors>
+
+    <properties>
+        <slf4j.version>1.6.6</slf4j.version>
+        <junit.version>4.10</junit.version>
+        <wicket.version>6.2.0</wicket.version>
+        <jetty.version>6.1.25</jetty.version>
+        <jersey.version>1.10</jersey.version>
+        <spring.version>3.1.0.RELEASE</spring.version>
+        <spring.data.version>1.0.2.RELEASE</spring.data.version>
+        <hibernate.version>4.0.1.Final</hibernate.version>
+        <querydsl.version>2.2.5</querydsl.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <database.url>jdbc:mysql://localhost/pvt</database.url>
+        <database.username>pvtweb</database.username>
+        <database.password>correcthorsebatterystaple</database.password>
+
+        <database.driverClassName>com.mysql.jdbc.Driver</database.driverClassName>
+        <database.platform>org.hibernate.dialect.MySQL5Dialect</database.platform>
+        <database.cacheRegionFactory>org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</database.cacheRegionFactory>
+
+        <database.useSecondLevelCache>true</database.useSecondLevelCache>
+        <database.useQueryCache>true</database.useQueryCache>
+
+        <database.showSql>true</database.showSql>
+        <database.generateDdl>true</database.generateDdl>
+
+        <wicket.deployment.mode>development</wicket.deployment.mode>
+        <archiveName>pvt</archiveName>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>Development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <wicket.deployment.mode>DEVELOPMENT</wicket.deployment.mode>
+                <pvt.passwordSalt>foo</pvt.passwordSalt>
+            </properties>
+        </profile>
+        <profile>
+            <id>Production</id>
+            <properties>
+                <wicket.deployment.mode>DEPLOYMENT</wicket.deployment.mode>
+
+                <database.showSql>false</database.showSql>
+                <database.generateDdl>false</database.generateDdl>
+            </properties>
+        </profile>
+    </profiles>
+
+
+
+    <dependencies>
+        <!-- Apache Commons (StringEscapeUtils) -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <!-- JUnit for testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.19</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.1.Final</version>
+        </dependency>
+
+        <!-- Hibernate uses slf4j for logging. The Hibernate Community tutorial uses the simple backend -->
+        <!--<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>-->
+        <!-- ...but let's use the COMPLICATED one instead! -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- Hibernate gives you a choice of bytecode providers between cglib and javassist -->
+        <!-- I use javassist because I have no idea what the above statement means, and javassist was suggested in a tutorial. -->
+        <!--<dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.12.1.GA</version>
+        </dependency>-->
+
+        <!-- EhCache caches data from the database in the RAM -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <!-- Hibernate validation -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.1.0.Final</version>
+        </dependency>
+
+        <!-- JPA -->
+        <!--<dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0.2</version>
+        </dependency>-->
+
+        <!--<dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.1.Final</version>
+        </dependency>-->
+
+        <!-- Wicket! :D -->
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket</artifactId>
+            <version>${wicket.version}</version>
+            <type>pom</type>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Wicket DateLabel, etc. -->
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-datetime</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+        <!-- optional Wicket extensions -->
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-extensions</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+
+        <!-- jQuery integration for Wicket -->
+        <dependency>
+            <groupId>org.odlabs.wiquery</groupId>
+            <artifactId>wiquery-core</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+        <!-- jQuery UI -->
+        <dependency>
+            <groupId>org.odlabs.wiquery</groupId>
+            <artifactId>wiquery-jquery-ui</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring.data.version}</version>
+        </dependency>
+
+        <!-- Not sure if we need this either. Igor Vaynberg implies that we don't -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Spring based testing -->
+        <!--<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>org.springframework.test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>-->
+
+        <!-- TODO: Do we need QueryDSL? -->
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>${querydsl.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hibernate-jpa-2.0-api</artifactId>
+                    <groupId>org.hibernate.javax.persistence</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-core</artifactId>
+            <version>${querydsl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>${querydsl.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Spring Wicket integration -->
+        <!-- I should read this whenever I have time: https://cwiki.apache.org/WICKET/spring.html -->
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-spring</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+
+
+        <!-- I think we need the dependencies below, but I'm not sure -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.2</version>
+        </dependency>
+<!--        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+        </dependency>-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Joda-Time is a de facto standard library for advanced date and time functions -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.1</version>
+        </dependency>
+
+        <!-- wiQuery offers Java-based jQuery integration for Wicket -->
+<!--        <dependency>
+            <groupId>org.odlabs.wiquery</groupId>
+            <artifactId>wiquery-core</artifactId>
+            <version>6.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odlabs.wiquery</groupId>
+            <artifactId>wiquery-jquery-ui</artifactId>
+            <version>6.2.0</version>
+        </dependency>-->
+
+        <!-- I'm including the Servlet API only to be able to read the context root URL -_- -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+
+    </repositories>
+    <build>
+        <!-- Let's omit the version from the name of the war file -->
+        <!--<finalName>pvt</finalName>-->
+        <!--<finalName>ROOT</finalName>-->
+        <finalName>${archiveName}</finalName>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <filtering>true</filtering>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <filtering>false</filtering>
+                <directory>src/test/java</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+        <plugins>
+            <!--<plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty.version}</version>
+                <configuration>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>8080</port>
+                            <maxIdleTime>3600000</maxIdleTime>
+                        </connector>
+                        <connector implementation="org.eclipse.jetty.server.ssl.SslSocketConnector">
+                            <port>8443</port>
+                            <maxIdleTime>3600000</maxIdleTime>
+                            <keystore>${project.build.directory}/test-classes/keystore</keystore>
+                            <password>wicket</password>
+                            <keyPassword>wicket</keyPassword>
+                        </connector>
+                    </connectors>
+                </configuration>
+            </plugin>-->
+            <!-- If I don't specify this, Maven uses 1.3... >_< -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <optimize>true</optimize>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+
+            <!-- For QueryDSL -->
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>maven-apt-plugin</artifactId>
+                <version>1.0.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Specifies the directory in which the query types are generated -->
+                            <outputDirectory>target/generated-sources</outputDirectory>
+                            <!-- States that the APT code generator should look for JPA annotations -->
+                            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

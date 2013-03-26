@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">${database.url}</property>
+        <property name="connection.driver_class">${database.driverClassName}</property>
+        <property name="connection.username">${database.username}</property>
+        <property name="connection.password">${database.password}</property>
+
+        <!-- SQL dialect -->
+        <property name="dialect">${database.platform}</property>
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+
+
+        <!-- Enable RAM cache for dramatic performance gain of great justice -->
+        <property name="hibernate.cache.use_second_level_cache">${database.useSecondLevelCache}</property>
+        <!-- Cache queries too -->
+        <property name="hibernate.cache.use_query_cache">${database.useQueryCache}</property>
+        <!-- Hibernate 3 EhCacheRegionFactory -->
+        <!--<property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</property>-->
+        <!--<property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</property>-->
+        <!-- Hibernate 4 EhCacheRegionFactory -->
+        <!--<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>-->
+        <property name="hibernate.cache.region.factory_class">${database.cacheRegionFactory}</property>
+
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">${database.showSql}</property>
+
+
+        <!-- Drop and re-create the database schema on startup -->
+        <property name="hbm2ddl.auto">${database.generateDdl}</property>
+
+        <mapping package="se.antongomes.pvt.data.model" />
+        <!-- <mapping class="se.antongomes.pvt.data.model.Foo"/> -->
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <!--<persistence-unit name="DefaultUnit" transaction-type="JTA">-->
+    <persistence-unit name="DefaultUnit" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <!-- <class>se.antongomes.pvt.data.model.Foo</class> -->
+        <!-- TODO: Caching -->
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+        <properties>
+            <!-- TODO: IntelliJ Doesn't like it when I use pom.xml variables ( ${like.this} ). Fix it later. -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <!--<property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
+
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.ejb.autodetection" value="class"/>
+
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+            <property name="hibernate.cache.use_query_cache" value="true"/>
+
+            <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory"/>
+            <property name="hibernate.ejb.naming_strategy"
+                      value="org.hibernate.cfg.DefaultComponentSafeNamingStrategy"/>
+            <!--<property name="hibernate.jdbc.batch_size" value="0"/>
+            <property name="hibernate.hbm2ddl" value="update"/>-->
+            <property name="hibernate.search.default.directory_provider"
+                      value="org.hibernate.search.store.FSDirectoryProvider"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

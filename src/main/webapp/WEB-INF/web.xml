@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        version="2.5">
+    <display-name>pvt</display-name>
+
+    <!--
+            There are three means to configure Wickets configuration mode and they
+            are tested in the order given.
+
+            1) A system property: -Dwicket.configuration
+            2) servlet specific <init-param>
+            3) context specific <context-param>
+
+            The value might be either "development" (reloading when templates change) or
+            "deployment". If no configuration is found, "development" is the default. -->
+    <!-- Wicket application filter -->
+    <filter>
+            <filter-name>wicket.pvt</filter-name>
+            <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+            <init-param>
+                <param-name>applicationFactoryClassName</param-name>
+                <param-value>org.apache.wicket.spring.SpringWebApplicationFactory</param-value>
+            </init-param>
+    </filter>
+    <filter-mapping>
+            <filter-name>wicket.pvt</filter-name>
+            <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+    <!-- Let's use our own error pages instead of the default tomcat ones -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/403</location>
+    </error-page>
+
+
+    <!-- Open Entity Manager in View -->
+    <filter>
+        <filter-name>openEntityManagerInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>openEntityManagerInViewFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- The location of the Spring configuration files -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:META-INF/spring/*.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+
+    <!-- Let character encoding be handled by Spring -->
+    <filter>
+        <filter-name>encoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>

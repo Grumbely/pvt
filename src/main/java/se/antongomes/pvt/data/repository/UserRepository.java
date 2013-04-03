@@ -9,5 +9,6 @@ import se.antongomes.pvt.data.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
     public User findByName(String name);
+    public User findByEmail(String email);
     public User findByNameAndPasswordHash(String name, String passwordHash);
 }

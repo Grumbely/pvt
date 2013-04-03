@@ -12,7 +12,12 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.ValidationError;
 import se.antongomes.pvt.PVTSession;
+import se.antongomes.pvt.service.UserService;
 
 import java.io.Serializable;
 
@@ -20,6 +25,9 @@ import java.io.Serializable;
  * User authentication interface
  */
 public class LoginPanel extends Panel {
+    @SpringBean
+    private UserService userService;
+
     public LoginPanel(String id) {
         super(id);
 
@@ -72,6 +80,23 @@ public class LoginPanel extends Panel {
             protected void onError(AjaxRequestTarget target, Form<?> form) {
 //                loginForm.add(new AttributeModifier("class", Model.of("loginForm visible")));
                 target.add(feedbackPanel);
+            }
+        });
+
+        passwordField.add(new IValidator<String>() {
+
+            private static final long serialVersionUID = 548356318447964952L;
+
+            @Override
+            public void validate(IValidatable<String> validatable) {
+                if (!usernameField.getInput().isEmpty() && !passwordField.getInput().isEmpty()
+                        && !PVTSession.get().attemptLogin(usernameField.getInput(), passwordField.getInput())) {
+                    validatable.error(new ValidationError().addKey("loginFailed"));
+                }
+                else {
+                    //TODO - this doesn't work. Go read WIA!
+                    continueToOriginalDestination();
+                }
             }
         });
     }

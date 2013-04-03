@@ -44,7 +44,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUserAccount(String username, String password, String email) throws ReservedUsernameException, DuplicateEMailException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (userRepo.findByName(username) != null)
+            throw new ReservedUsernameException();
+        if (userRepo.findByEmail(email) != null)
+            throw new DuplicateEMailException();
+
+        User user = new User();
+        user.setName(username);
+        user.setPasswordHash(domainService.EncryptPassword(password));
+        user.setEmail(email);
+        user.setAccountState(User.AccountState.EMAIL_NOT_VERIFIED);
+
+        user = userRepo.save(user); //get the database's changes to the entity
+        return user;
     }
 
     @Override

@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         user.setResetPasswordExpiration(GetResetPasswordGrace());
 
         //Reset password request flood protection
-        if (user.getAccountState() != User.AccountState.EMAIL_NOT_VERIFIED
+        if (user.getAccountState() != "EMAIL_NOT_VERIFIED"
                 && (user.getResetPasswordExpiration() == null
                 || user.getResetPasswordExpiration().before(new Date()))) {
             //TODO - send out an email!

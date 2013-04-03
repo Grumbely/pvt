@@ -5,6 +5,8 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import se.antongomes.pvt.data.model.User;
+import se.antongomes.pvt.service.UserService;
 
 /**
 * Wicket user web session.
@@ -12,7 +14,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 */
 public class PVTSession extends WebSession {
     @SpringBean
-    private FooService fooService;
+    private UserService userService;
+
+    private User user;
 
     public PVTSession(Request request) {
         super(request);
@@ -24,44 +28,30 @@ public class PVTSession extends WebSession {
     /**
      * Get the session for the calling thread.
      */
-    public static se.deathgame.PVTSession get() {
-        return (se.deathgame.PVTSession) Session.get();
+    public static se.antongomes.pvt.PVTSession get() {
+        return (se.antongomes.pvt.PVTSession) Session.get();
     }
 
-    public Player getPlayer() {
-        return player;
+    public User getUser() {
+        return user;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
      * Whether the user is logged in or not.
      */
     public boolean isGuest() {
-        return player == null;
-    }
-
-    /**
-     * Whether the user has a higher or equal clearance to prefect or not.
-     */
-    public boolean isAdmin() {
-        return player != null && (player.getPrivilegeLevel() == Player.PrivilegeLevel.GAMEMASTER || player.getPrivilegeLevel() == Player.PrivilegeLevel.PREFECT);
-    }
-
-    /**
-     * Whether the user has a higher or equal clearance to moderator or not.
-     */
-    public boolean isMod() {
-        return player != null && (player.getPrivilegeLevel() != Player.PrivilegeLevel.GAMEMASTER || player.getPrivilegeLevel() == Player.PrivilegeLevel.PREFECT || player.getPrivilegeLevel() == Player.PrivilegeLevel.MODERATOR);
+        return user == null;
     }
 
     /**
      * Logs the current user out.
      */
     public void logOut() {
-        player = null;
+        user = null;
         this.invalidate();
     }
 
@@ -70,9 +60,9 @@ public class PVTSession extends WebSession {
      * @return true if successful, otherwise false.
      */
     public boolean attemptLogin(String username, String password) {
-        Player loggedInPlayer = playerService.attemptLogin(username, password);
-        if (loggedInPlayer != null) {
-            setPlayer(loggedInPlayer);
+        User loggedInUser = userService.attemptLogin(username, password);
+        if (loggedInUser != null) {
+            setUser(loggedInUser);
             return true;
         }
         return false;

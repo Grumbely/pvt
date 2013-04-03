@@ -36,6 +36,6 @@
         <property name="hbm2ddl.auto">${database.generateDdl}</property>
 
         <mapping package="se.antongomes.pvt.data.model" />
-        <!-- <mapping class="se.antongomes.pvt.data.model.Foo"/> -->
+        <mapping class="se.antongomes.pvt.data.model.User" />
     </session-factory>
 </hibernate-configuration>

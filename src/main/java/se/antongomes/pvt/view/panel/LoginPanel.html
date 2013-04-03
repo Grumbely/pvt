@@ -1,0 +1,24 @@
+<wicket:panel>
+    <wicket:container wicket:id="guest">
+        <p><wicket:message key="loginPanel.loginPromoter"></wicket:message></p>
+        <button id="loginButton"><wicket:message key="loginPanel.loginVerb"></wicket:message></button>
+        <p><wicket:message key="loginPanel.registrationPromoter"></wicket:message></p>
+        <!--<button wicket:id="registerButton" wicket:message="value:loginPanel.registrationVerb" />-->
+        <a id="registerButton" href="/register"><wicket:message key="loginPanel.registrationVerb"></wicket:message></a>
+    </wicket:container>
+    <wicket:container wicket:id="member">
+        <p><wicket:message key="loginPanel.loggedInAs"></wicket:message> <strong wicket:id="username"></strong></p>
+        <button wicket:id="logoutButton"><wicket:message key="loginPanel.logoutVerb"></wicket:message></button>
+    </wicket:container>
+    <!--<wicket:container wicket:id="loginPanelBody"></wicket:container>-->
+    <form wicket:id="loginForm" class="loginForm">
+        <div class="hideButton icon-cross"></div>
+        <label for="username"><wicket:message key="loginPanel.username"></wicket:message>:</label>
+        <input type="text" wicket:id="username" id="username" />
+        <label for="password"><wicket:message key="loginPanel.password"></wicket:message>:</label>
+        <input type="password" wicket:id="password" id="password" />
+        <input type="submit" wicket:id="submit" wicket:message="value:loginPanel.loginVerb" />
+        <!--<div wicket:id="feedbackContainer"><a class="feedbackBox" wicket:id="feedbackPanel"></a></div>-->
+        <div class="feedbackBox" wicket:id="feedbackPanel"></div>
+    </form>
+</wicket:panel>

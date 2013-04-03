@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Vad Händer?</title>
+    <!--<wicket:link><link rel="stylesheet" type="text/css" href="../../../../webapp/static/pvt.css"></wicket:link>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('button#loginButton').click(function(){
+                $('.loginForm').slideToggle(200);
+            });
+            $('.hideButton').click(function(e){
+                $(e.target).parent().slideToggle(200);
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+    <div>
+        <div wicket:id="loginPanel" id="loginPanel"></div>
+        <div class="heading">
+            <h1>Vad Händer?</h1>
+        </div>
+    </div>
+</header>
+<nav>
+    <div wicket:id="navPanel"></div>
+</nav>
+<div id="content"><wicket:child></wicket:child></div>
+<footer>
+    <div></div>
+    <p>Copyright &copy; 2013 Folk i världens coolaste projektgrupp</p>
+</footer>
+</body>
+</html>

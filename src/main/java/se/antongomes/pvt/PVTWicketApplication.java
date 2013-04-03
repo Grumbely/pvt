@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import se.antongomes.pvt.view.HomePage;
+import se.antongomes.pvt.view.RegisterPage;
 import se.antongomes.pvt.view.error.ForbiddenPage;
 import se.antongomes.pvt.view.error.NotFoundPage;
 
@@ -41,6 +42,8 @@ public class PVTWicketApplication extends WebApplication {
         //error pages
         mountPage("/404", NotFoundPage.class);
         mountPage("/403", ForbiddenPage.class);
+
+        mountPage("/register", RegisterPage.class);
 
 //        mountSharedResource("/static/pvt.css", new ResourceReference(PVTWicketApplication.class, "view/resource/pvt.css").getSharedResourceKey());
 

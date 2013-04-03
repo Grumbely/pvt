@@ -65,13 +65,12 @@
         <querydsl.version>2.2.5</querydsl.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <database.url>jdbc:postgresql://localhost/pvt</database.url>
+        <database.username>pvt</database.username>
+        <database.password>pvt</database.password>
 
-        <database.url>jdbc:mysql://localhost/pvt</database.url>
-        <database.username>pvtweb</database.username>
-        <database.password>correcthorsebatterystaple</database.password>
-
-        <database.driverClassName>com.mysql.jdbc.Driver</database.driverClassName>
-        <database.platform>org.hibernate.dialect.MySQL5Dialect</database.platform>
+        <database.driverClassName>org.postgresql.Driver</database.driverClassName>
+        <database.platform>org.hibernate.dialect.PostgreSQLDialect</database.platform>
         <database.cacheRegionFactory>org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</database.cacheRegionFactory>
 
         <database.useSecondLevelCache>true</database.useSecondLevelCache>
@@ -130,6 +129,13 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.19</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- PostgreSQl -->
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901.jdbc4</version>
         </dependency>
 
         <!-- Hibernate -->

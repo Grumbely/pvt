@@ -4,12 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "user_")
 public class User {
-    public static enum AccountState {
-        EMAIL_VERIFIED,
-        EMAIL_NOT_VERIFIED
-    }
-
     public static final int EMAIL_VERIFICATION_HASH_STRENGTH = 64;
     public static final int RESET_PASSWORD_HASH_STRENGTH     = 64;
 
@@ -34,8 +30,8 @@ public class User {
     private Date resetPasswordExpiration;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="accountState", nullable = false, columnDefinition = "ENUM('EMAIL_VERIFIED', 'EMAIL_NOT_VERIFIED')")
-    private AccountState accountState;
+    @Column(name="accountState", nullable = false)
+    private String accountState;
 
     public void setName(String name) {
         this.name = name;
@@ -85,11 +81,11 @@ public class User {
         this.resetPasswordExpiration = resetPasswordExpiration;
     }
 
-    public AccountState getAccountState() {
+    public String getAccountState() {
         return accountState;
     }
 
-    public void setAccountState(AccountState accountState) {
+    public void setAccountState(String accountState) {
         this.accountState = accountState;
     }
 }

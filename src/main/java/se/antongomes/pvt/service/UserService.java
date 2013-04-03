@@ -8,10 +8,10 @@ import se.antongomes.pvt.data.model.User;
  * @see User
  */
 public interface UserService {
-    public class ReservedUsernameException extends RuntimeException {
+    public class ReservedUsernameException extends Exception {
         private static final long serialVersionUID = -5486805587633037627L;
     }
-    public class DuplicateEMailException extends RuntimeException {
+    public class DuplicateEMailException extends Exception {
         private static final long serialVersionUID = -709467804322475770L;
     }
 

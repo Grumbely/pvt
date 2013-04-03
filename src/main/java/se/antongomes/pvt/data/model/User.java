@@ -23,7 +23,7 @@ public class User {
     @Column(name = "emailVerificationHash", nullable = true, length = EMAIL_VERIFICATION_HASH_STRENGTH, columnDefinition = "char(64)")
     private String emailVerificationHash;
 
-    @Column(name = "email", nullable = false, length = 255)
+    @Column(name = "email", nullable = false, length = 255, unique = true)
     private String email;
 
     @Column(name = "resetPasswordHash", nullable = true, length = RESET_PASSWORD_HASH_STRENGTH, columnDefinition = "char(64)")

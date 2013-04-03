@@ -29,7 +29,6 @@ public class User {
     @Column(name = "resetPasswordExpiration", nullable = true)
     private Date resetPasswordExpiration;
 
-    @Enumerated(EnumType.STRING)
     @Column(name="accountState", nullable = false)
     private String accountState;
 

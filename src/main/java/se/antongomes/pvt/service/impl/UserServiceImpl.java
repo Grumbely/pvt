@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         user.setName(username);
         user.setPasswordHash(domainService.EncryptPassword(password));
         user.setEmail(email);
-        user.setAccountState(User.AccountState.EMAIL_NOT_VERIFIED);
+        user.setAccountState("EMAIL_NOT_VERIFIED");
 
         user = userRepo.save(user); //get the database's changes to the entity
         return user;

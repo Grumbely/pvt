@@ -37,6 +37,10 @@ public class User {
     @Column(name="accountState", nullable = false, columnDefinition = "ENUM('EMAIL_VERIFIED', 'EMAIL_NOT_VERIFIED')")
     private AccountState accountState;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
